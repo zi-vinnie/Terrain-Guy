@@ -1,0 +1,100 @@
+function init(self)
+	tilemap.set_tile('/mapper#map', 'layer1', 30, 20, 0)
+	
+	local start_height = 10
+	local height = start_height
+	local heights = {}
+	for i = 1, 30  do
+		height = height + rnd.range(0, 2) - 1
+		if height > 17 then
+			height = 16
+		elseif height < 3 then
+			height = 4
+		end
+		table.insert(heights, height) 
+	end
+	pprint(heights)
+	for x, height in ipairs(heights) do
+		local top = 16
+		local sub_top = 29
+		if x == 1 then
+			if height - heights[x+1] == 1 then
+				sub_top = 73
+				top = 20
+			end
+		end
+		if x == #heights then
+			if height - heights[x-1] == 1 then
+				sub_top = 74
+				top = 18
+			end
+		end
+		if x > 1 and x < #heights then
+			if height - heights[x-1] == 1 and height - heights[x+1] == 1 then
+				sub_top = 58
+				top = 21
+			elseif height - heights[x-1] == 1 then
+				sub_top = 74
+				top = 18
+			elseif height - heights[x+1] == 1 then
+				sub_top = 73
+				top = 20
+			end
+		end
+		for y = 1, height do
+			local tile = 29
+			if y == height - 1 then
+				tile = sub_top
+			elseif y == height then
+				tile = top
+			end
+			tilemap.set_tile('/mapper#map', 'layer1', x, y, tile)
+		end
+	end
+	go.set_position(vmath.vector3(16, 32*heights[1] + 32, 0), '/guy' )
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
